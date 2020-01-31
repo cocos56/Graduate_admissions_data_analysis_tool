@@ -1,5 +1,6 @@
 import os
 
+
 def writeDataToFile(filePath, text):
 	print(filePath, text)
 	# # 为了方便，避免忘记close掉这个文件对象，可以用下面这种方式替代

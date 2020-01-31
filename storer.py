@@ -22,10 +22,10 @@ import xlsxwriter
 #通过designPattern.singleton装饰器来实现单例模式，具体为新建类的_instance属性，重写new方法，并对外提供getInstance接口
 @singleton  #此处等于selector = singleton(selector)
 class storer:
-    '''
+    """
     本类用于写入数据到硬盘/从硬盘读取数据
 	本类采用单例模式（通过重写new方法，并对外提供getInstance接口）
-    '''
+    """
     def __init__(self):
         self.databasePath = self.getDataBasePath()
 
@@ -63,12 +63,12 @@ class storer:
         return data
 
     def getPickleFileData(self, pickleFilePath):
-        '''
+        """
         :param pickleFilePath:
             self, pickleFilePath
         :return:
-        '''
-        if (os.path.exists(pickleFilePath)):
+        """
+        if os.path.exists(pickleFilePath):
             with open(pickleFilePath, 'rb') as f:
                 data = pickle.load(f)
                 f.close()
