@@ -90,6 +90,12 @@ class spider:
         spider._writeDataToHtmlFile(path, spider.r.text)
         return spider._getHtmlFileData(path)
 
+    @classmethod
+    def _writeDataToHtmlFile(cls, path, text):
+        from V3_0.Storer.WriteData.api import writeDataToFile
+        writeDataToFile(path, text)
+        pass
+
     #重新采集网页数据并将其转为文本数据，一般用于处理异常
     @staticmethod
     def _regainHtmlTextData(url, filePath):
