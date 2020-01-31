@@ -39,9 +39,3 @@ def asyncRunFunc(func, paraList, poolNum = None, asyn = True):
             results.append(func(para))
         data = results
     return data
-
-def getArgs(*args):
-    return args
-
-def getKwArgs(**kwargs):
-    print(kwargs)
