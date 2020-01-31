@@ -26,7 +26,6 @@ class storer:
     本类用于写入数据到硬盘/从硬盘读取数据
 	本类采用单例模式（通过重写new方法，并对外提供getInstance接口）
     '''
-    
     def __init__(self):
         self.databasePath = self.getDataBasePath()
 
@@ -38,7 +37,7 @@ class storer:
         不存在的话创建目录后再返回路径
         '''
         path = os.getcwd() + '\\Database'
-        if(os.path.exists(path)):
+        if os.path.exists(path):
             return path
         else:
             os.mkdir(path)

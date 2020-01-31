@@ -67,6 +67,7 @@ if __name__ == '__main__':
     #print(data)
     ###第03步：逐一获取每一个学科类别的所有机构名
     pklPath = databasePath + '\\step1-03-SubjectsInstitutions.pkl'
+    # https://yz.chsi.com.cn/zsml/queryAction.do?yjxkdm=0101&mldm=01
     data = storerIns.getPickleFileDataFromOtherData(pklPath, selectorIns.getInstitutionsName, data)
     ###第04步：获取所有学科的招生信息
     pklPath = subjectsInfoPklPath

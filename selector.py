@@ -140,6 +140,7 @@ class selector:
 
     def _getPagesUrl(self, SC_data):
         urls = []
+        # print(SC_data)
         max = int(SC_data[2])
         li = range(1, max+1)
         for i in li:
