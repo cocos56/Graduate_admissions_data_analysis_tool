@@ -1,6 +1,2 @@
-import os
-
-
-def deleteFile(path):
-	if os.path.exists(path):
-		os.remove(path)
+from .delete import deleteFile
+from .delete import deleteDir

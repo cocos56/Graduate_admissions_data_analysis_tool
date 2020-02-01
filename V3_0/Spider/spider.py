@@ -14,7 +14,7 @@ from .Config.api import getErrCount, setErrCount
 from .Config.api import getErrMax, setErrMax
 from .Config.api import getErrNum, setErrNum
 from .Config.api import getSmallestFileSize, setSmallestFileSize
-from V3_0.Storer.Error.api import FileNotExistError
+from V3_0.Storer.Error.api import FileNotExistError, FileSizeIsZeroError
 
 
 def getHtmlTextData(url, filePath):
@@ -28,7 +28,7 @@ def getHtmlTextData(url, filePath):
 		print('No.', getErrNum() + 1, ' accessing ', url, sep='')
 		try:
 			r = requests.get(url, headers=getHeaders())
-			errNum = 0
+			setErrNum(0)
 		except Exception as err:
 			print(err)
 			_regainHtmlTextData(url, filePath)
@@ -68,8 +68,3 @@ def _getHtmlFileData(FilePath):
 		data = f.read()
 		f.close()
 		return data
-
-
-class FileSizeIsZeroError(Exception):
-	def __str__(self):
-		return "文件大小为0"

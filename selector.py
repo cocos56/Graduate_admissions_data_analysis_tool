@@ -60,29 +60,6 @@ class selector:
 				os.remove(subjectsInfoPklPath)
 			self.__init__()
 
-	# 获取所有学科类别的URL
-	def getSubjectsURLs(self, data):
-		urls = {}
-		url = getDomain() + '/zsml/queryAction.do?yjxkdm='
-		for SC_code in data:
-			SC_name = data[SC_code]
-			index_url = url + str(SC_code)
-			print(index_url, SC_code, SC_name)
-			index_htmls_Path = self.indexHtmlsRootPath + '//' + SC_code + '-' + SC_name
-			self.storerIns.makeDir(index_htmls_Path)
-			# 获取最大页码数
-			max = self._getMaxPageNumberWithIndexURL(index_url, index_htmls_Path + '//1')
-			dic = {SC_code: (SC_name, index_url, max)}
-			print(dic)
-			urls.update(dic)
-		return urls
-
-	def _getMaxPageNumberWithIndexURL(self, index_url, index_htmlPath):
-		data = getHtmlTextData(index_url, index_htmlPath)
-		pattern = "<a href='#' onclick='nextPage\(\d+?\)'>(\d+?)</a>"
-		max = self._findAllWithRe(data, pattern)[-1]
-		return max
-
 	# 获取每一个学科类别的所有机构名
 	def getInstitutionsName(self, SCs_data):
 		data = {}
@@ -133,7 +110,7 @@ class selector:
 	def _getSCInfoFromPklFile(self, SC_code, value):
 		SC_code_and_name = SC_code + '-' + value[0]
 		pkl_SC_path = self.pklsRootPath + '\\' + SC_code_and_name + '.pkl'
-		para = getArgs(SC_code, value)
+		para = (SC_code, value)
 		return self.storerIns.getPickleFileDataFromOtherData(pkl_SC_path, self._getSCInfoFromHtmls, para)
 
 	def _getSCInfoFromHtmls(self, para):
@@ -151,23 +128,23 @@ class selector:
 		self.storerIns.makeDir(htmls_SC_Path)
 		SC_instutions = value[1:]
 		paraList = []
-		final = getArgs(SC_code, SC_name)
+		final = (SC_code, SC_name)
 		for page in SC_instutions:
 			for ins in page:
-				if (ins == ''):
+				if ins == '':
 					break
 				ins_code = ins[0]
 				ins_name = ins[1]
 				ins_url = self._getInstitutionURL(SC_code, ins_name)
 				html_ins_Path = htmls_SC_Path + '\\' + ins_code + '-' + ins_name
-				para = getArgs(ins_code, ins_name, ins_url, html_ins_Path, htmls_SC_Path)
+				para = (ins_code, ins_name, ins_url, html_ins_Path, htmls_SC_Path)
 				paraList.append(para)
 		datum = asyncRunFunc(self._asyncGetInstitutionInfo, paraList, poolNum=self.poolNum, asyn=self.asynFlag)
 		datum.insert(0, final)
 		return datum
 
 	def _getInstitutionURL(self, SC_code, ins_name):
-		url = domain + '/zsml/querySchAction.do?dwmc='
+		url = getDomain() + '/zsml/querySchAction.do?dwmc='
 		url += parse.quote(ins_name)
 		url = url + '&yjxkdm=' + SC_code
 		return url
@@ -239,7 +216,7 @@ class selector:
 		# 筛选出：考试范围的id及URL
 		pattern = 'id=(.+?)"'
 		scope_id = self._findAllWithRe(temp[0], pattern)[0]
-		scope_url = domain + '/zsml/kskm.jsp?id=' + scope_id
+		scope_url = getDomain() + '/zsml/kskm.jsp?id=' + scope_id
 		schoolDepartment = final[1]
 		schoolDepartment = schoolDepartment.replace('/', '或')
 		researchArea = final[3]
@@ -250,7 +227,7 @@ class selector:
 		researchArea = researchArea.replace('\n', '')
 		scope_name = schoolDepartment + '-' + final[2] + '-' + researchArea
 		scope_path = htmls_RA_scopePath + '\\' + scope_name
-		if scope_url == domain + '/zsml/kskm.jsp?id=':
+		if scope_url == getDomain() + '/zsml/kskm.jsp?id=':
 			print(scope_url)
 			print(scope_path)
 			sleep(9999999999999)

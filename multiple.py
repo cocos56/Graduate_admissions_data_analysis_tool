@@ -20,10 +20,10 @@ import os
 def asyncRunFunc(func, paraList, poolNum = None, asyn = True):
     if poolNum == None:
         poolNum = os.cpu_count() // 2
-    if (poolNum < 1):
+    if poolNum < 1:
         poolNum = 1
     results = []
-    if (asyn):
+    if asyn:
         pool = multiprocessing.Pool(poolNum)
         for para in paraList:
             #print(para)

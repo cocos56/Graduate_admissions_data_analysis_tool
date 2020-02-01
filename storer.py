@@ -12,13 +12,13 @@
 * 存储器模块
 * 为存储与读取数据提供支持
 '''
-
 from designPattern import singleton
 import os
 import json
 import xlsxwriter
 from V3_0.Storer.GetData.api import getPickleFileData
 from V3_0.Storer.Error.api import FileNotExistError
+from V3_0.Storer.WriteData.api import writeDataToPickleFile
 
 
 # 通过designPattern.singleton装饰器来实现单例模式，具体为新建类的_instance属性，重写new方法，并对外提供getInstance接口
@@ -85,7 +85,7 @@ class storer:
 		except FileNotExistError:
 		# 本地不存在
 			data = func(OtherData)
-			self.writeDataToPickleFile(pickleFilePath, data)
+			writeDataToPickleFile(pickleFilePath, data)
 		# 返回数据
 		return data
 

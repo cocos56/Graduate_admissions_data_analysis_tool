@@ -18,7 +18,7 @@
 from storer import storer
 from selector import selector
 import os
-from V3_0.Storer.Del.api import deleteFile
+from V3_0.Selector.api import getSubjectsURLs
 
 if __name__ == '__main__':
 	# 获取所有需要用到的单例
@@ -60,14 +60,10 @@ if __name__ == '__main__':
 	###第02步：获取所有学科类别的URL
 	# 设置文件存放路径
 	pklPath = databasePath + '\\step1-02-SubjectsURL.pkl'
-	data = storerIns.getPickleFileDataFromOtherData(pklPath, selectorIns.getSubjectsURLs, data)
+	data = storerIns.getPickleFileDataFromOtherData(pklPath, getSubjectsURLs, data)
 	# print(data)
-	deleteFile(pklPath)
-	exit(0)
 	###第03步：逐一获取每一个学科类别的所有机构名
 	pklPath = databasePath + '\\step1-03-SubjectsInstitutions.pkl'
-	# https://yz.chsi.com.cn/zsml/queryAction.do?yjxkdm=0101&mldm=01
-	# mldm=zyxw
 	data = storerIns.getPickleFileDataFromOtherData(pklPath, selectorIns.getInstitutionsName, data)
 	###第04步：获取所有学科的招生信息
 	pklPath = subjectsInfoPklPath
