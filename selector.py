@@ -47,7 +47,7 @@ class selector:
 		# 设置异步加载标志与异步处理数量
 		self.asynFlag = True
 		# self.asynFlag = False
-		self.poolNum = 16
+		self.poolNum = 8
 
 	# 用于快速使用正则表达式提取所有数据
 	def _findAllWithRe(self, data, pattern):

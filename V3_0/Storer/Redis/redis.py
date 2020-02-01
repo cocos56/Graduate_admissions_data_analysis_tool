@@ -1,7 +1,7 @@
 from redis import StrictRedis
-import redis
+from redis.exceptions import ConnectionError
 
-sr = StrictRedis(host='st.coco56.top', port=6379, db=0)
+sr = StrictRedis(host='s.coco56.top', port=6379, db=0)
 
 def getInt(key, default=0):
 	"""
@@ -12,7 +12,7 @@ def getInt(key, default=0):
 	"""
 	try:
 		value = int(sr.get(key))
-	except redis.exceptions.ConnectionError as err:
+	except ConnectionError as err:
 		print(err)
 		value = getInt(key, default)
 	if value is None:
