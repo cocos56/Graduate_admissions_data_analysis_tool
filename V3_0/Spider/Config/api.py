@@ -5,4 +5,3 @@ from .config import getErrNum, setErrNum
 from .config import getErrMax, setErrMax
 from .config import getErrCount, setErrCount
 from .config import getSmallestFileSize, setSmallestFileSize
-from .config import saveCount

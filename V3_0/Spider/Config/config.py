@@ -1,6 +1,4 @@
-from V3_0.Storer.GetData.api import getPickleFileData
-from V3_0.Storer.Config.api import getDataBasePath
-from V3_0.Storer.WriteData.api import writeDataToPickleFile
+from V3_0.Storer.Redis.api import getInt, setInt
 
 _domain = 'http://yz.chsi.com.cn'
 _headers = {'User-Agent':
@@ -14,71 +12,42 @@ def getDomain(): return _domain
 def getHeaders(): return _headers
 
 
-pklPath = getDataBasePath() + '\\CountData.pkl'
-
-
 class Config:
 	count, errCount, errNum, errMax, count2 = 0, 0, 0, 0, 0
 	smallestFileSize = 999999999
 
 
-def getCount(): return Config.count
+def getCount(): return getInt("count")
 
 
-def setCount(c): Config.count = c
+def setCount(c): setInt("count", c)
 
 
-def getErrCount(): return Config.errCount
+def getErrCount(): return getInt("errCount")
 
 
-def setErrCount(c): Config.errCount = c
+def setErrCount(c): setInt("errCount", c)
 
 
-def getErrNum(): return Config.errNum
+def getErrNum(): return getInt("errNum")
 
 
-def setErrNum(c): Config.errNum = c
+def setErrNum(c): setInt("errNum", c)
 
 
-def getErrMax(): return Config.errMax
+def getErrMax(): return getInt("errMax")
 
 
-def setErrMax(c): Config.errMax = c
+def setErrMax(c): setInt("errMax", c)
 
 
-def getCount2(): return Config.count2
+def getCount2(): return getInt("count2")
 
 
-def setCount2(c): Config.count2 = c
+def setCount2(c): setInt("count2", c)
 
 
-def getSmallestFileSize(): return Config.smallestFileSize
+def getSmallestFileSize(): return getInt("smallestFileSize", 999999999)
 
 
-def setSmallestFileSize(c): Config.smallestFileSize = c
-
-
-def initCount():
-	try:
-		data = getPickleFileData(pklPath)
-	except Exception as err:
-		print(err)
-	else:
-		setCount(data['count'])
-		setErrCount(data['errCount'])
-		setErrCount(data['errNum'])
-		setErrMax(data['errMax'])
-		setCount2(data['count2'])
-		setSmallestFileSize(data['smallestFileSize'])
-
-
-def saveCount():
-	dic = {}
-	dic.update({'count': getCount()})
-	dic.update({'errCount': getErrCount()})
-	dic.update({'errNum': getErrNum()})
-	dic.update({'errMax': getErrMax()})
-	dic.update({'count2': getCount2()})
-	dic.update({'smallestFileSize': getSmallestFileSize()})
-	print('saving ')
-	writeDataToPickleFile(pklPath, dic)
+def setSmallestFileSize(c): setInt("smallestFileSize", c)

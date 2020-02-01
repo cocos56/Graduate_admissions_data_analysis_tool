@@ -7,7 +7,7 @@
 import requests
 import os
 from V3_0.Storer.WriteData.api import writeDataToFile
-from .Config.api import getHeaders, saveCount
+from .Config.api import getHeaders
 from .Config.api import getCount2, setCount2
 from .Config.api import getCount, setCount
 from .Config.api import getErrCount, setErrCount
@@ -64,7 +64,6 @@ def _getHtmlFileData(FilePath):
 			print('smallerSize:', size, FilePath)
 			print('smallestFileSize', getSmallestFileSize())
 			setSmallestFileSize(size)
-			saveCount()
 	with open(FilePath, 'r', encoding='utf-8') as f:
 		data = f.read()
 		f.close()
