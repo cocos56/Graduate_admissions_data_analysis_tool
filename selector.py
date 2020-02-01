@@ -226,6 +226,7 @@ class selector:
 		researchArea = researchArea.replace('*', '')
 		researchArea = researchArea.replace('?', '')
 		researchArea = researchArea.replace('\n', '')
+		researchArea = researchArea.replace('\t', '')
 		researchArea = researchArea.replace('|', '_')
 		scope_name = schoolDepartment + '-' + final[2] + '-' + researchArea
 		scope_path = htmls_RA_scopePath + '\\' + scope_name
