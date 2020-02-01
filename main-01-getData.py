@@ -16,7 +16,6 @@
 """
 
 from storer import storer
-from spider import spider
 from selector import selector
 import os
 from V3_0.Storer.Del.api import deleteFile

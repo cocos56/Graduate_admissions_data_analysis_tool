@@ -1,6 +1,6 @@
 import os
 import pickle
-from .error import FileNotExistError
+from ..Error.api import FileNotExistError
 
 
 def getPickleFileData(pickleFilePath):

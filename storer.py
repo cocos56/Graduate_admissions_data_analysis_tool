@@ -17,6 +17,8 @@ from designPattern import singleton
 import os
 import json
 import xlsxwriter
+from V3_0.Storer.GetData.api import getPickleFileData
+from V3_0.Storer.Error.api import FileNotExistError
 
 
 # 通过designPattern.singleton装饰器来实现单例模式，具体为新建类的_instance属性，重写new方法，并对外提供getInstance接口
@@ -67,7 +69,7 @@ class storer:
         获取Pickle文件数据
         """
 		# 本地存在
-		data = self.getPickleFileData(pickleFilePath)
+		data = getPickleFileData(pickleFilePath)
 		# 本地不存在
 		if data == False:
 			data = storer.getInstance().getJsonFileData(jsonFilePath)
@@ -78,9 +80,10 @@ class storer:
 
 	def getPickleFileDataFromOtherData(self, pickleFilePath, func, OtherData):
 		# 本地存在
-		data = self.getPickleFileData(pickleFilePath)
+		try:
+			data = getPickleFileData(pickleFilePath)
+		except FileNotExistError:
 		# 本地不存在
-		if data == False:
 			data = func(OtherData)
 			self.writeDataToPickleFile(pickleFilePath, data)
 		# 返回数据

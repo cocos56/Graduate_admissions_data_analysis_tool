@@ -14,26 +14,29 @@ from .Config.api import getErrCount, setErrCount
 from .Config.api import getErrMax, setErrMax
 from .Config.api import getErrNum, setErrNum
 from .Config.api import getSmallestFileSize, setSmallestFileSize
+from V3_0.Storer.Error.api import FileNotExistError
 
 
 def getHtmlTextData(url, filePath):
 	path = filePath + '.html'
-	data = _getHtmlFileData(path)
-	if not data == False:
+	try:
+		data = _getHtmlFileData(path)
+	except FileNotExistError:
+		setCount(getCount() + 1)
+		print('count=%d, errCount=%d, errMax=%d' % (getCount(), getErrCount(), getErrMax()))
+		print(filePath)
+		print('No.', getErrNum() + 1, ' accessing ', url, sep='')
+		try:
+			r = requests.get(url, headers=getHeaders())
+			errNum = 0
+		except Exception as err:
+			print(err)
+			_regainHtmlTextData(url, filePath)
+		writeDataToFile(path, r.text)
+		return _getHtmlFileData(path)
+	else:
 		setCount2(getCount2()+1)
 		return data
-	setCount(getCount()+1)
-	print('count=%d, errCount=%d, errMax=%d' % (getCount(), getErrCount(), getErrMax()))
-	print(filePath)
-	print('No.', getErrNum() + 1, ' accessing ', url, sep='')
-	try:
-		r = requests.get(url, headers=getHeaders())
-		errNum = 0
-	except Exception as err:
-		print(err)
-		_regainHtmlTextData(url, filePath)
-	writeDataToFile(path, r.text)
-	return _getHtmlFileData(path)
 
 
 # 重新采集网页数据并将其转为文本数据，一般用于处理异常
@@ -70,8 +73,3 @@ def _getHtmlFileData(FilePath):
 class FileSizeIsZeroError(Exception):
 	def __str__(self):
 		return "文件大小为0"
-
-
-class FileNotExistError(Exception):
-	def __str__(self):
-		return "文件不存在"

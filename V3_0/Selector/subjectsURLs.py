@@ -1,4 +1,4 @@
-from V3_0.Spider.Config.api import domain
+from V3_0.Spider.Config.api import getDomain
 from V3_0.Storer.Config.api import getDataBasePath
 from V3_0.Storer.Make.api import makeDir
 import os
@@ -10,7 +10,7 @@ class SubjectsURLs:
 	@classmethod
 	def get(cls, data):
 		urls = {}
-		url = domain + '/zsml/queryAction.do?yjxkdm='
+		url = getDomain() + '/zsml/queryAction.do?yjxkdm='
 		for SC_code in data:
 			SC_name = data[SC_code]
 			index_url = url + str(SC_code)

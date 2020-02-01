@@ -15,16 +15,14 @@
 """
 
 from designPattern import addGetInstanceFunc
-from spider import spider
 from storer import storer
 from urllib import parse
 from multiple import asyncRunFunc
-from multiple import getArgs
 import shutil
 import os
 from time import sleep
-domain = spider.domain
-getHtmlTextData = spider.getHtmlTextData
+from V3_0.Spider.api import getHtmlTextData
+from V3_0.Spider.Config.api import getDomain
 
 
 @addGetInstanceFunc
@@ -65,7 +63,7 @@ class selector:
 	# 获取所有学科类别的URL
 	def getSubjectsURLs(self, data):
 		urls = {}
-		url = domain + '/zsml/queryAction.do?yjxkdm='
+		url = getDomain() + '/zsml/queryAction.do?yjxkdm='
 		for SC_code in data:
 			SC_name = data[SC_code]
 			index_url = url + str(SC_code)
