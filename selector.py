@@ -23,6 +23,7 @@ import os
 from time import sleep
 from V3_0.Spider.api import getHtmlTextData
 from V3_0.Spider.Config.api import getDomain
+from V3_0.Setting.api import asynFlag, poolNum
 
 
 @addGetInstanceFunc
@@ -43,11 +44,6 @@ class selector:
 		# 创建pkl文件保存的根目录
 		self.pklsRootPath = self.storerIns.databasePath + '\\pkls'
 		self.storerIns.makeDir(self.pklsRootPath)
-
-		# 设置异步加载标志与异步处理数量
-		self.asynFlag = True
-		# self.asynFlag = False
-		self.poolNum = 8
 
 	# 用于快速使用正则表达式提取所有数据
 	def _findAllWithRe(self, data, pattern):
@@ -140,7 +136,7 @@ class selector:
 				html_ins_Path = htmls_SC_Path + '\\' + ins_code + '-' + ins_name
 				para = (ins_code, ins_name, ins_url, html_ins_Path, htmls_SC_Path)
 				paraList.append(para)
-		datum = asyncRunFunc(self._asyncGetInstitutionInfo, paraList, poolNum=self.poolNum, asyn=self.asynFlag)
+		datum = asyncRunFunc(self._asyncGetInstitutionInfo, paraList, poolNum=poolNum, asyn=asynFlag)
 		datum.insert(0, final)
 		return datum
 

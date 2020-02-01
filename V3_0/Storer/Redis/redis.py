@@ -1,7 +1,8 @@
 from redis import StrictRedis
 from redis.exceptions import ConnectionError
+from V3_0.Setting.api import redisHost
 
-sr = StrictRedis(host='s.coco56.top', port=6379, db=0)
+sr = StrictRedis(host=redisHost, port=6379, db=0)
 
 def getInt(key, default=0):
 	"""
