@@ -65,28 +65,20 @@ class storer:
 		return data
 
 	def getPickleFileDataFromJsonFile(self, pickleFilePath, func, jsonFilePath):
-		"""
-        获取Pickle文件数据
-        """
-		# 本地存在
-		data = getPickleFileData(pickleFilePath)
-		# 本地不存在
-		if data == False:
-			data = storer.getInstance().getJsonFileData(jsonFilePath)
-			data = func(data)
-			self.writeDataToPickleFile(pickleFilePath, data)
-		# 返回数据
-		return data
-
-	def getPickleFileDataFromOtherData(self, pickleFilePath, func, OtherData):
-		# 本地存在
 		try:
 			data = getPickleFileData(pickleFilePath)
 		except FileNotExistError:
-		# 本地不存在
+			data = storer.getInstance().getJsonFileData(jsonFilePath)
+			data = func(data)
+			writeDataToPickleFile(pickleFilePath, data)
+		return data
+
+	def getPickleFileDataFromOtherData(self, pickleFilePath, func, OtherData):
+		try:
+			data = getPickleFileData(pickleFilePath)
+		except FileNotExistError:
 			data = func(OtherData)
 			writeDataToPickleFile(pickleFilePath, data)
-		# 返回数据
 		return data
 
 	def dellAllFiles(self, dirPath):

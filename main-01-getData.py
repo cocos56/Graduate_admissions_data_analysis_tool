@@ -14,7 +14,7 @@
 * 为打开/启动程序以及调用执行相关库函数提供支持
 * 具体的，启动后开始进行第一阶段的数据采集工作
 """
-
+from V3_0.Spider.api import getHtmlTextData
 from storer import storer
 from selector import selector
 import os
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	# 本地不存在所需的Json文件，访问URL获取数据，然后将数据保存在本地后返回数据
 	else:
 		jsonHtmlPath = databasePath + '\\step1-01-1-RawSubjectsCode'
-		data = spider.getHtmlTextData(jsonURL, jsonHtmlPath)
+		data = getHtmlTextData(jsonURL, jsonHtmlPath)
 		storerIns.writeStringDataToJsonFile(data, jsonPath)
 
 	# (Python数据类型)
