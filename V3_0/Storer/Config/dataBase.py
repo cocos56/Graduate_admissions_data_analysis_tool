@@ -1,12 +1,13 @@
 import os
+from V3_0.Setting.api import dbPath
 
 
-def createDataBase(path):
-	if os.path.exists(path):
-		return path
-	if os.path.exists(os.path.dirname(path)):
-		os.mkdir(path)
-		return path
+def getDataBasePath():
+	if os.path.exists(dbPath):
+		return dbPath
+	if os.path.exists(os.path.dirname(dbPath)):
+		os.mkdir(dbPath)
+		return dbPath
 	raise FatherPathNotExist
 
 
