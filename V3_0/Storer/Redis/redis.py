@@ -6,15 +6,10 @@ def getInt(key, default=0):
 	"""
 	从Redis数据库中通过键获取整数
 	:param key: 键
-	:param default:当键不存在或者所对应的值不是整数时时设置的默认值
+	:param default:当键不存在时设置的默认值
 	:return: 键所对应的值
 	"""
-	try:
-		value = int(sr.get(key))
-	except Exception as err:
-		print(err)
-		value = default
-		setInt(key, value)
+	value = int(sr.get(key))
 	if value is None:
 		value = default
 		setInt(key, value)
