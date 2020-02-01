@@ -32,7 +32,8 @@ def getHtmlTextData(url, filePath):
 		except Exception as err:
 			print(err)
 			_regainHtmlTextData(url, filePath)
-		writeDataToFile(path, r.text)
+		else:
+			writeDataToFile(path, r.text)
 		return _getHtmlFileData(path)
 	else:
 		setCount2(getCount2()+1)
