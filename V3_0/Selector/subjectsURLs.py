@@ -5,6 +5,7 @@ from .api import findAllWithRe
 import os
 from .Config.api import htmlsRootPath
 from .Config.api import proList
+from os.path import join
 
 
 indexHtmlsRootPath = os.path.join(htmlsRootPath, r'0000index')
@@ -16,7 +17,7 @@ def getSubjectsURLs(data):
 		SC_name = data[SC_code]
 		index_url = getIndexURL(SC_code)
 		print(index_url, SC_code, SC_name)
-		index_htmls_Path = indexHtmlsRootPath + '//' + SC_code + '-' + SC_name
+		index_htmls_Path = join(indexHtmlsRootPath, SC_code + '-' + SC_name)
 		makeDir(index_htmls_Path)
 		# 获取最大页码数
 		max = getMaxPageNumberWithIndexURL(index_url, index_htmls_Path + '//1')
