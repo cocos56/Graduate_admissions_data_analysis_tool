@@ -17,7 +17,7 @@ def getSubjectsURLs(data):
 		SC_name = data[SC_code]
 		index_url = getIndexURL(SC_code)
 		print(index_url, SC_code, SC_name)
-		index_htmls_Path = join(indexHtmlsRootPath, SC_code + '-' + SC_name)
+		index_htmls_Path = join(indexHtmlsRootPath,  '%s-%s' % (SC_code, SC_name))
 		makeDir(index_htmls_Path)
 		# 获取最大页码数
 		max = getMaxPageNumberWithIndexURL(index_url, index_htmls_Path + '//1')

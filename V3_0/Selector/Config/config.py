@@ -1,7 +1,7 @@
-import os
+from os.path import join
 from V3_0.Storer.Config.api import getDataBasePath
 
-htmlsRootPath = os.path.join(getDataBasePath(), r'htmls')
+htmlsRootPath = join(getDataBasePath(), r'htmls')
 
 proList = [
 	'0252', '0253', '0254', '0255', '0256', '0257', '0351', '0352', '0353', '0451',

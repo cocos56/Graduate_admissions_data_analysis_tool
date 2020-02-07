@@ -24,6 +24,8 @@ from time import sleep
 from V3_0.Spider.api import getHtmlTextData
 from V3_0.Spider.Config.api import getDomain
 from V3_0.Setting.api import asynFlag, poolNum
+from V3_0.Storer.api import getDataBasePath, makeDir
+from os.path import join
 
 
 @addGetInstanceFunc
@@ -34,16 +36,14 @@ class selector:
     '''
 
 	def __init__(self):
-		self.storerIns = storer.getInstance()
-
 		# 创建原始数据网页文件保存的根目录
-		self.htmlsRootPath = self.storerIns.databasePath + '\\htmls'
-		self.storerIns.makeDir(self.htmlsRootPath)
+		self.htmlsRootPath = join(getDataBasePath(), 'htmls')
+		makeDir(self.htmlsRootPath)
 		self.indexHtmlsRootPath = self.htmlsRootPath + '//0000index'
-		self.storerIns.makeDir(self.indexHtmlsRootPath)
+		makeDir(self.indexHtmlsRootPath)
 		# 创建pkl文件保存的根目录
-		self.pklsRootPath = self.storerIns.databasePath + '\\pkls'
-		self.storerIns.makeDir(self.pklsRootPath)
+		self.pklsRootPath = join(getDataBasePath(), 'pkls')
+		makeDir(self.pklsRootPath)
 
 	# 用于快速使用正则表达式提取所有数据
 	def _findAllWithRe(self, data, pattern):

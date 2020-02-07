@@ -43,7 +43,7 @@ if __name__ == '__main__':
 	jsonPath = databasePath + '\\step1-01-1-RawSubjectsCode.json'
 	jsonURL = 'https://yz.chsi.com.cn/zsml/pages/getZy.jsp'
 	# 本地存在所需的Json文件，打开文件读取并返回数据
-	if (os.path.exists(jsonPath)):
+	if os.path.exists(jsonPath):
 		data = storerIns.getJsonFileData(jsonPath)
 	# 本地不存在所需的Json文件，访问URL获取数据，然后将数据保存在本地后返回数据
 	else:
