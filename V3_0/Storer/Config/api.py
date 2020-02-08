@@ -1,1 +1,1 @@
-from .dataBase import getDataBasePath
+from .dataBase import getDataBasePath, getExcelRootPath

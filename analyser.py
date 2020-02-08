@@ -1,47 +1,32 @@
-# -*- coding : utf-8 -*-
-# @Author : Coco
-# @Author's GitHub : https://github.com/COCO5666
-# @Author's CSND : https://blog.csdn.net/COCO56
-# @Author's Webpage : https://coco5666.github.io/
-# @IDE: PyCharm
-# @Python: Python3.7.2
-# @Created Time :2019-02-14 10:16:50
-# @Modified Time :2019-02-16 23:58:25
-# @File : analyser.py
-
-'''
+"""
 * 分析器模块
 * 为数据分析提供支持
-'''
+"""
 
 from designPattern import addGetInstanceFunc
-from selector import selector
 import re
 from V3_0.Spider.api import getDomain
 from V3_0.Storer.api import makeDir, writeDataToXlsxFile
-
-
-selectorIns = selector.getInstance()
+from os.path import join
+from V3_0.Storer.api import getExcelRootPath
 
 
 def findAllWithRe(data, pattern):
 	expression = re.compile(pattern)
-	res = expression.findall(data)
-	return res
+	return expression.findall(data)
 
 
 @addGetInstanceFunc
 class analyser:
-
 	def getRawSubjectInfo(self, subjectsInfo):
 		instance = modifyRawSubjeectsInfo.getInstance()
-		final = [self.xlsxRootDirPath]
+		final = [getExcelRootPath()]
 		for subjectInfo in subjectsInfo:
 			subjectCodeAndName = subjectInfo[0]
 			subjectData = subjectInfo[1:]
 			subjectCode = subjectCodeAndName[0]
 			subjectName = subjectCodeAndName[1]
-			xlsxDirPath = self.xlsxRootDirPath + '//' + subjectCode + '-' + subjectName
+			xlsxDirPath = join(getExcelRootPath(), '%s-%s' % (subjectCode, subjectName))
 			data = instance.getInstitutionInfo(subjectData, xlsxDirPath)
 			(xlsxFilePath, sheetName, sheetHead, sheetDatum) = data
 			data = []
@@ -84,9 +69,8 @@ class analyser:
 
 @addGetInstanceFunc
 class modifyRawSubjeectsInfo:
-
 	def getInstitutionInfo(self, subjectData, xlsxDirPath):
-		xlsxFilePath = xlsxDirPath + '//rawInfo.xlsx'
+		xlsxFilePath = join(xlsxDirPath, 'rawInfo.xlsx')
 		sheetName = 'rawInfo'
 		sheetHead = [
 			'机构名', '院系所', '专业',
@@ -181,7 +165,6 @@ class modifyRawSubjeectsInfo:
 
 @addGetInstanceFunc
 class getInfoByInstitution:
-
 	def getSubjectInfo(self, subjectName, datum):
 		dic = {}
 		for data in datum:

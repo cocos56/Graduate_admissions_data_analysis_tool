@@ -15,7 +15,6 @@
 """
 
 from designPattern import addGetInstanceFunc
-from storer import storer
 from urllib import parse
 from multiple import asyncRunFunc
 import shutil
