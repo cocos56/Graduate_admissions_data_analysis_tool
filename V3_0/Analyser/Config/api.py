@@ -1,0 +1,1 @@
+from .courseLike import courseLike

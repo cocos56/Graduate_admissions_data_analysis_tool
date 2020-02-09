@@ -1,14 +1,3 @@
-# -*- coding : utf-8 -*-
-# @Author : Coco
-# @Author's GitHub : https://github.com/COCO5666
-# @Author's CSND : https://blog.csdn.net/COCO56
-# @Author's Webpage : https://coco5666.github.io/
-# @IDE: PyCharm
-# @Python: Python3.7.2
-# @Created Time :2019-02-16 21:49:29
-# @Modified Time :2019-02-16 23:58:25
-# @File : selector.py
-
 """
 * 筛选器模块
 * 为对采集到的数据进行筛选/过滤提供支持
@@ -25,15 +14,15 @@ from V3_0.Spider.Config.api import getDomain
 from V3_0.Setting.api import asynFlag, poolNum
 from V3_0.Storer.api import getDataBasePath, makeDir
 from os.path import join
+from V3_0.Selector.api import findAllWithRe
 
 
 @addGetInstanceFunc
 class selector:
-	'''
+	"""
     本类用于采集期间进行的数据筛选/过滤操作
     本类采用单例模式（通过designPattern.singleton装饰器来新建类的_instance属性，重写new方法，并对外提供getInstance接口）
-    '''
-
+    """
 	def __init__(self):
 		# 创建原始数据网页文件保存的根目录
 		self.htmlsRootPath = join(getDataBasePath(), 'htmls')
@@ -43,11 +32,6 @@ class selector:
 		# 创建pkl文件保存的根目录
 		self.pklsRootPath = join(getDataBasePath(), 'pkls')
 		makeDir(self.pklsRootPath)
-
-	# 用于快速使用正则表达式提取所有数据
-	def _findAllWithRe(self, data, pattern):
-		from V3_0.Selector.api import findAllWithRe
-		return findAllWithRe(data, pattern)
 
 	def reSelect(self, flag, subjectsInfoPklPath):
 		if flag:
@@ -62,7 +46,7 @@ class selector:
 		for SC_code in SCs_data:
 			value = SCs_data[SC_code]
 			SC_name = value[0]
-			index_htmls_Path = self.indexHtmlsRootPath + '//' + SC_code + '-' + SC_name
+			index_htmls_Path = join(self.indexHtmlsRootPath, '%s-%s' % (SC_code, SC_name))
 			self.storerIns.makeDir(index_htmls_Path)
 			pagesURL = self._getPagesUrl(value)
 			ins = [SC_name]
@@ -110,13 +94,12 @@ class selector:
 		return self.storerIns.getPickleFileDataFromOtherData(pkl_SC_path, self._getSCInfoFromHtmls, para)
 
 	def _getSCInfoFromHtmls(self, para):
-		'''
-        :param para:
+		"""
         :return:
             类型：列表
             元素：第一个元素为哨兵（保存学科类别代码与名称），其余元素为数据项
                 其中：其余所有数据项为：datum = asyncRunFunc(self._asyncGetInstitutionInfo, paraList, asyn=False)
-        '''
+        """
 		(SC_code, value) = para
 		SC_name = value[0]
 		SC_code_and_name = SC_code + '-' + SC_name
@@ -151,17 +134,12 @@ class selector:
 		return data
 
 	def _getInstitutionInfo(self, ins_code, ins_name, ins_url, html_ins_Path, htmls_SC_Path):
-		'''
-        :param ins_code:
-        :param ins_name:
-        :param ins_url:
-        :param html_ins_Path:
-        :param htmls_SC_Path:
+		"""
         :return:
             类型：列表
             元素：第一个元素为哨兵（保存机构代码与机构名），其余元素为数据项（每一个研究方向的具体信息）
                 其中：每个数据项为：data = self._getResearchAreaData(i, htmls_RA_scopePath)
-        '''
+        """
 		# RA: resarch area
 		htmls_RA_scope_Root_Path = htmls_SC_Path + '\\Scope'
 		self.storerIns.makeDir(htmls_RA_scope_Root_Path)
@@ -185,33 +163,31 @@ class selector:
 		return final
 
 	def _getResearchAreaInfo(self, rawData, htmls_RA_scopePath):
-		'''
-        :param rawData:
-        :param htmls_RA_scopePath:
+		"""
         :return:
             类型：列表
             列表内元素：考试方式、院系所、专业、研究方向、学习方式、指导教师、拟招生人数、考试范围的id、跨专业、备注、考试范围
                 其中：为字符类型的有：考试方式、院系所、专业、研究方向、学习方式、指导教师、拟招生人数、考试范围的id、跨专业、备注
                     为元组类型的有：考试范围
-        '''
+        """
 		# 筛选出：考试方式、院系所、专业、研究方向、学习方式
 		pattern = '>(.+?)</td>'
-		temp = self._findAllWithRe(rawData, pattern)
+		temp = findAllWithRe(rawData, pattern)
 		final = temp[:5]
 		temp = temp[5:]
 		# 筛选出：指导教师
 		pattern = '<span.+?>(.+?)</span>'
-		t = self._findAllWithRe(temp[0], pattern)
+		t = findAllWithRe(temp[0], pattern)
 		final.append(t[0])
 		temp = temp[1:]
 		# 筛选出：拟招生人数
 		pattern = "document.write\(cutString\(\'(.+?)\'"
-		t = self._findAllWithRe(temp[0], pattern)
+		t = findAllWithRe(temp[0], pattern)
 		final.append(t[0])
 		temp = temp[1:]
 		# 筛选出：考试范围的id及URL
 		pattern = 'id=(.+?)"'
-		scope_id = self._findAllWithRe(temp[0], pattern)[0]
+		scope_id = findAllWithRe(temp[0], pattern)[0]
 		scope_url = getDomain() + '/zsml/kskm.jsp?id=' + scope_id
 		schoolDepartment = final[1]
 		schoolDepartment = schoolDepartment.replace('/', '或')
@@ -233,12 +209,12 @@ class selector:
 		temp = temp[1:]
 		# 筛选出：跨专业
 		pattern = '>(.+?)</a>'
-		t = self._findAllWithRe(temp[0], pattern)
+		t = findAllWithRe(temp[0], pattern)
 		final.append(t[0])
 		temp = temp[1:]
 		# 筛选出：备注
 		pattern = "document.write\(cutString\(\'(.+?)\'"
-		t = self._findAllWithRe(temp[0], pattern)
+		t = findAllWithRe(temp[0], pattern)
 		final.append(t[0])
 		temp = temp[1:]
 		# 获取考试范围
@@ -250,14 +226,14 @@ class selector:
 		text = getHtmlTextData(scope_url, scope_path)
 		# 获取表头
 		pattern = '<th>(.+?)</th>'
-		thead = self._findAllWithRe(text, pattern)
+		thead = findAllWithRe(text, pattern)
 		# 获取表格内容
 		pattern = '<tbody class="zsml-res-items">(.+?)</tbody>'
-		tbody = self._findAllWithRe(text, pattern)
+		tbody = findAllWithRe(text, pattern)
 		temp = []
 		temp.append(thead)
 		for i in tbody:
 			pattern = '.+?(\(.+?)\n.+?<span class="sub-msg">(.+?)</span>.+?'
-			t = self._findAllWithRe(i, pattern)
+			t = findAllWithRe(i, pattern)
 			temp.append(t)
 		return tuple(temp)

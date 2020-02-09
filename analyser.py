@@ -9,11 +9,7 @@ from V3_0.Spider.api import getDomain
 from V3_0.Storer.api import makeDir, writeDataToXlsxFile
 from os.path import join
 from V3_0.Storer.api import getExcelRootPath
-
-
-def findAllWithRe(data, pattern):
-	expression = re.compile(pattern)
-	return expression.findall(data)
+from V3_0.Selector.api import findAllWithRe2
 
 
 @addGetInstanceFunc
@@ -132,7 +128,7 @@ class modifyRawSubjeectsInfo:
 				t = list(t)
 				pattern = r'\((\d+)\)(.+)'
 				try:
-					codeAndName = list(findAllWithRe(t[0], pattern)[0])
+					codeAndName = list(findAllWithRe2(t[0], pattern)[0])
 				except IndexError:
 					err = ['(-)无', '(--)无']
 					if t[0] in err:
@@ -195,7 +191,7 @@ class getInfoByInstitution:
 		temp = []
 		for i in data:
 			try:
-				tup = findAllWithRe(i, '\((.+)\)(.+)')[0]
+				tup = findAllWithRe2(i, '\((.+)\)(.+)')[0]
 				temp.append(tup[0] + '-' + tup[1])
 			except IndexError:
 				print(i)

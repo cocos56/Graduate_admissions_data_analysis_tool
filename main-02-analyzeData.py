@@ -38,6 +38,7 @@ if __name__ == '__main__':
     )
     # 写入到Excel文件中
     analyserIns.writeRawSubjectInfoToXlsxFile(rawData)
+
     initRawData(rawData)
 
     ###第03步：把所有学科下的所有学校的招生数量按从高到低排列，
