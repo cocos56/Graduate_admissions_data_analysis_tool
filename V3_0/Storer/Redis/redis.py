@@ -2,7 +2,8 @@ from redis import StrictRedis
 from redis.exceptions import ConnectionError
 from V3_0.Setting.api import redisHost
 
-sr = StrictRedis(host=redisHost, port=6379, db=0)
+sr = StrictRedis(host=redisHost, port=63, db=0)
+
 
 def getInt(key, default=0):
 	"""
@@ -20,6 +21,7 @@ def getInt(key, default=0):
 		value = default
 		setInt(key, value)
 	return value
+
 
 def setInt(key, value):
 	"""

@@ -1,1 +1,1 @@
-from .optimizer import optimizeProposedEnrollment, optimizeCourse
+from .optimizer import optimizeProposedEnrollment, optimizeCourse, exclusionBusinessClassTwo

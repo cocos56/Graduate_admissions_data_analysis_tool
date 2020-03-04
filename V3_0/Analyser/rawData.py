@@ -1,9 +1,18 @@
 from V3_0.Storer.MySQL.api import createTables, insertList, dropAllTable
-from .Cleaner.api import optimizeCourse, optimizeProposedEnrollment
+from .Cleaner.api import optimizeCourse, optimizeProposedEnrollment, exclusionBusinessClassTwo
 
 priorSubject = [
 	'0854-电子信息',
-	'0835-软件工程'
+	'0401-教育学',
+	# '0774-电子科学与技术',
+	# '0775-计算机科学与技术',
+	# '0809-电子科学与技术',
+	# '0810-信息与通信工程',
+	# '0811-控制科学与工程',
+	# '0812-计算机科学与技术',
+	# '0835-软件工程',
+	# '0837-安全科学与工程',
+	# '0839-网络空间安全'
 ]
 
 
@@ -18,8 +27,8 @@ def initRawData(data):
 	iLi = []
 	for subject in data:
 		tableName = str.split(subject[0][0], '\\')[-1]
-		if tableName not in priorSubject:
-			continue
+		# if tableName not in priorSubject:
+		# 	continue
 		tablesName.append(tableName)
 		for rawInfo in subject[1:]:
 			info = getInfo(rawInfo)
@@ -36,16 +45,34 @@ def getInfo(rawInfo):
 	 examinationMethod, learningStyles, instructor, proposedEnrollment,
 	 examinationSyllabusInfo, politics, foreignLanguage, businessClassOne, businessClassTwo,
 	 transdiscipline, Notes) = rawInfo
-	institution, institutionURL = institutionInfo
-	examinationSyllabusURL = examinationSyllabusInfo[1]
+
+	if exclusionBusinessClassTwo(businessClassTwo):
+		return False
+
+	if '只招推免生' in Notes:
+		return False
+
+	if '英语' not in foreignLanguage:
+		# print(foreignLanguage)
+		return False
+
+	# if '302-数学二' not in businessClassOne:
+	# 	return False
 
 	proposedEnrollment = optimizeProposedEnrollment(proposedEnrollment)
 	if proposedEnrollment is False:
 		return False
-	politics, foreignLanguage, businessClassOne, businessClassTwo = optimizeCourse(politics, foreignLanguage,
-																				   businessClassOne, businessClassTwo)
+
+	enrollmentType, proposedEnrollment = str.split(proposedEnrollment, '：')
+	proposedEnrollment = int(proposedEnrollment)
+
+	institution, institutionURL = institutionInfo
+	examinationSyllabusURL = examinationSyllabusInfo[1]
+
+	(politics, foreignLanguage, businessClassOne, businessClassTwo) =\
+		optimizeCourse(politics, foreignLanguage, businessClassOne, businessClassTwo)
 
 	return (institution, institutionURL, department, major, researchDirection,
-			examinationMethod, learningStyles, instructor, proposedEnrollment,
+			examinationMethod, learningStyles, instructor, proposedEnrollment, enrollmentType,
 			examinationSyllabusURL, politics, foreignLanguage, businessClassOne, businessClassTwo,
 			transdiscipline, Notes)
