@@ -4,13 +4,15 @@ from .Cleaner.api import optimizeCourse, optimizeProposedEnrollment, exclusionBu
 priorSubject = [
 	'0854-电子信息',
 	'0401-教育学',
+	'0201-理论经济学',
+	'0202-应用经济学',
+	'0835-软件工程',
 	# '0774-电子科学与技术',
 	# '0775-计算机科学与技术',
 	# '0809-电子科学与技术',
 	# '0810-信息与通信工程',
 	# '0811-控制科学与工程',
 	# '0812-计算机科学与技术',
-	# '0835-软件工程',
 	# '0837-安全科学与工程',
 	# '0839-网络空间安全'
 ]
@@ -27,8 +29,8 @@ def initRawData(data):
 	iLi = []
 	for subject in data:
 		tableName = str.split(subject[0][0], '\\')[-1]
-		# if tableName not in priorSubject:
-		# 	continue
+		if tableName not in priorSubject:
+			continue
 		tablesName.append(tableName)
 		for rawInfo in subject[1:]:
 			info = getInfo(rawInfo)
@@ -46,8 +48,8 @@ def getInfo(rawInfo):
 	 examinationSyllabusInfo, politics, foreignLanguage, businessClassOne, businessClassTwo,
 	 transdiscipline, Notes) = rawInfo
 
-	if exclusionBusinessClassTwo(businessClassTwo):
-		return False
+	# if exclusionBusinessClassTwo(businessClassTwo):
+	# 	return False
 
 	if '只招推免生' in Notes:
 		return False
