@@ -29,8 +29,8 @@ def initRawData(data):
 	iLi = []
 	for subject in data:
 		tableName = str.split(subject[0][0], '\\')[-1]
-		if tableName not in priorSubject:
-			continue
+		# if tableName not in priorSubject:
+		# 	continue
 		tablesName.append(tableName)
 		for rawInfo in subject[1:]:
 			info = getInfo(rawInfo)
