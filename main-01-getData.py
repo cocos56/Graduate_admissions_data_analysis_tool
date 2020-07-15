@@ -14,6 +14,7 @@
 * 为打开/启动程序以及调用执行相关库函数提供支持
 * 具体的，启动后开始进行第一阶段的数据采集工作
 """
+
 from V3_0.Spider.api import getHtmlTextData
 from storer import storer
 from selector import selector
